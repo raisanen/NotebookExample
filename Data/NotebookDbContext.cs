@@ -108,7 +108,6 @@ namespace Data {
             modelBuilder.Entity<Note>().HasData(
                 new Note { Id = 1, Title = "test", Text = "This is a test", UserId = 1 }
             );
-
         }
     }
 }
