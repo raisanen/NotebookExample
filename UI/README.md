@@ -1,4 +1,4 @@
-# UI Project - Text-Based User Interface
+﻿# UI Project - Text-Based User Interface
 
 A console-based user interface for the Notebook application, implementing a page-based navigation system with state machine pattern.
 
@@ -12,18 +12,18 @@ The UI project provides a text-based interactive interface for the Notebook appl
 
 ```
 UI/
-??? Program.cs              # Application entry point
-??? TUI/                    # Text User Interface components
-    ??? AppState.cs         # Singleton session state manager
-    ??? IO.cs               # Singleton console I/O utilities
-    ??? Menu.cs             # Generic navigable menu component
-    ??? PageStateMachine.cs # State machine for page navigation
-    ??? Page/               # Individual page implementations
-        ??? IPage.cs        # Page interface
-        ??? LoginPage.cs    # User authentication page
-        ??? MenuPage.cs     # Main menu page
-        ??? AddNotePage.cs  # Note creation page
-        ??? ShowNotesPage.cs # Note display page
+├── Program.cs              # Application entry point
+└── TUI/                    # Text User Interface components
+    ├── AppState.cs         # Singleton session state manager
+    ├── IO.cs               # Singleton console I/O utilities
+    ├── Menu.cs             # Generic navigable menu component
+    ├── PageStateMachine.cs # State machine for page navigation
+    └── Page/               # Individual page implementations
+        ├── IPage.cs        # Page interface
+        ├── LoginPage.cs    # User authentication page
+        ├── MenuPage.cs     # Main menu page
+        ├── AddNotePage.cs  # Note creation page
+        └── ShowNotesPage.cs # Note display page
 ```
 
 ### Key Design Patterns
@@ -221,32 +221,32 @@ var menu = new Menu<PageState>() {
 - Generic return type `T` for flexibility
 - Keyboard navigation (Up/Down arrows)
 - Visual selection indicator
-- Wrapping navigation (top ? bottom)
+- Wrapping navigation (top ↔ bottom)
 - Dynamic item addition/removal
 
 ## Dependency Flow
 
 ```
 Program.cs
-    ?? Creates NotebookDbContext
-    ?? Creates UnitOfWork
-    ?? Configures PageStateMachine
-    ?? Injects controllers into pages
+    ├─ Creates NotebookDbContext
+    ├─ Creates UnitOfWork
+    ├─ Configures PageStateMachine
+    └─ Injects controllers into pages
 
 Pages
-    ?? Depend on IXxxController interfaces (Logic layer)
-    ?? Use AppState for session management
-    ?? Use IO for console operations
+    ├─ Depend on IXxxController interfaces (Logic layer)
+    ├─ Use AppState for session management
+    └─ Use IO for console operations
 
 Controllers (from Logic layer)
-    ?? Depend on IUnitOfWork (Data layer)
+    └─ Depend on IUnitOfWork (Data layer)
 ```
 
 **Separation of Concerns:**
-- ? UI layer only handles presentation
-- ? Business logic delegated to Logic layer controllers
-- ? Data access through Repository/UoW patterns
-- ? Easy to mock dependencies for testing
+- ✅ UI layer only handles presentation
+- ✅ Business logic delegated to Logic layer controllers
+- ✅ Data access through Repository/UoW patterns
+- ✅ Easy to mock dependencies for testing
 
 ## Application Flow
 
@@ -260,27 +260,27 @@ Controllers (from Logic layer)
 ### Session Flow
 
 ```
-???????????????
-? Login Page  ????????? Authentication
-???????????????
-      ? ? Success
-      ?
-???????????????
-?  Menu Page  ????????? Navigation Hub
-???????????????
-      ?
-      ??? Show Notes ??? Display ??? Back to Menu
-      ?
-      ??? Add Note ??? Create ??? Back to Menu
-      ?
-      ??? Quit ??? End State ??? Application Exits
+┌─────────────┐
+│ Login Page  │──────── Authentication
+└─────┬───────┘
+      │ ✓ Success
+      ↓
+┌─────────────┐
+│  Menu Page  │──────── Navigation Hub
+└─────┬───────┘
+      │
+      ├─→ Show Notes ──→ Display ──→ Back to Menu
+      │
+      ├─→ Add Note ──→ Create ──→ Back to Menu
+      │
+      └─→ Quit ──→ End State ──→ Application Exits
 ```
 
 ## Authentication & Security
 
 ### Current Implementation
 
-?? **Security Warning:** The current implementation has significant security limitations:
+⚠️ **Security Warning:** The current implementation has significant security limitations:
 
 - **Plaintext passwords** stored in database
 - **No password hashing** (BCrypt, PBKDF2, Argon2)
@@ -380,13 +380,13 @@ dotnet run
 
 When adding new features to the UI:
 
-1. ? Follow existing page patterns
-2. ? Check authentication before rendering
-3. ? Use `IO.Instance` for console operations
-4. ? Return appropriate `PageState` for navigation
-5. ? Add XML documentation to all public members
-6. ? Consider testability in design
-7. ? Maintain consistent 80-character formatting
+1. ✅ Follow existing page patterns
+2. ✅ Check authentication before rendering
+3. ✅ Use `IO.Instance` for console operations
+4. ✅ Return appropriate `PageState` for navigation
+5. ✅ Add XML documentation to all public members
+6. ✅ Consider testability in design
+7. ✅ Maintain consistent 80-character formatting
 
 ## Related Documentation
 
